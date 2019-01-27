@@ -9,6 +9,7 @@
 # CMake
 cmake-build-*/
 
+.DS_Store
 
 # File-based project format
 *.iws

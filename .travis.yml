@@ -15,7 +15,7 @@ before_install:
   - gcloud config set compute/zone us-east1-b
   - gcloud container clusters get-credentials kubernetes-complex
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t wemgl/react-test ./client/Dockerfile.dev ./client
+  - docker build -t wemgl/react-test -f ./client/Dockerfile.dev ./client
 script:
   - docker run wemgl/react-test npm run test -- --coverage
 deploy:

@@ -1,10 +1,25 @@
 sudo: required
 services:
-- docker
+  - docker
+env:
+  global:
+    - GIT_COMMIT=$(git rev-parse HEAD | cut -c1-7)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
-- openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv
-  -in service-account.json.enc -out service-account.json -d
-- curl https://sdk.cloud.google.com | bash > /dev/null;
-- source $HOME/google-cloud-sdk/path.bash.inc
-- gcloud components update kubectl
-- gcloud auth activate-service-account --key-file service-account.json
+  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project kubernetes-complex-229919
+  - gcloud config set compute/zone us-east1-b
+  - gcloud container clusters get-credentials kubernetes-complex
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t wemgl/react-test ./client/Dockerfile.dev ./client
+script:
+  - docker run wemgl/react-test npm run test -- --coverage
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master

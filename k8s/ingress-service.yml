@@ -13,10 +13,6 @@ spec:
             backend:
               serviceName: client-cluster-ip-service
               servicePort: 3000
-          - path: /(static/(?:js|css)/.*)
-            backend:
-              serviceName: client-cluster-ip-service
-              servicePort: 3000
           - path: /api/?(.*)
             backend:
               serviceName: server-cluster-ip-service

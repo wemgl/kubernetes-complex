@@ -12,7 +12,7 @@ spec:
     - hosts:
         - thirdstravel.com
         - www.thirdstravel.com
-        secretName: thirdstravel-com
+      secretName: thirdstravel-com
   rules:
     - host: thirdstravel.com
       http:
